@@ -1,0 +1,40 @@
+<div class="register-container">
+  <mat-card>
+    <mat-card-content>
+      <form class="example-form" (submit)="createPost()">
+        <mat-form-field appearance="fill">
+          <mat-label>title</mat-label>
+          <input matInput [formControl]="titleFormControl" placeholder="Введите ваш email" type="email" required>
+        </mat-form-field>
+        <mat-form-field appearance="fill">
+          <mat-label>address</mat-label>
+          <input matInput [formControl]="addressFormControl" placeholder="Введите ваш email" type="email" required>
+        </mat-form-field>
+        <mat-form-field appearance="fill">
+          <mat-label>phone</mat-label>
+          <input matInput [formControl]="phoneFormControl" placeholder="Введите ваш email" type="email" required>
+        </mat-form-field>
+        <mat-form-field appearance="fill">
+          <mat-label>description</mat-label>
+          <input matInput [formControl]="descriptionFormControl" placeholder="Введите ваш email" type="email" required>
+        </mat-form-field>
+
+
+        <button type="button" mat-raised-button (click)="fileUpload.click()">Choose File</button>
+        <input hidden (change)="onFileSelected($event)" #fileUpload type="file" id="file">
+
+
+
+        <div>
+          <ul id="navlist">
+            <li *ngFor='let image of images'>
+              <img class="thumbnail" src="{{image}}" height="200">
+            </li>
+          </ul>
+        </div>
+
+        <button mat-raised-button color="accent">Создать</button>
+      </form>
+    </mat-card-content>
+  </mat-card>
+</div>
