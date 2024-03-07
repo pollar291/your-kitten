@@ -71,7 +71,7 @@ export class AuthComponent {
       .then(
         (response) => {
           localStorage.setItem('email', email)
-          localStorage.setItem('token', response.uuid)
+          localStorage.setItem('token', response.token)
         },
         (error) => {
           console.log(error);

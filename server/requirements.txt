@@ -1,6 +1,4 @@
 flask
 python-dotenv
 psycopg2-binary
-Image
-python-magic-bin
 flask-cors

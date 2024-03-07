@@ -1,19 +1,20 @@
-FROM python:3.7-alpine
+FROM python:3.9-alpine
 
-WORKDIR /code
+WORKDIR /backend
 
 ENV FLASK_APP=app.py
 
 ENV FLASK_RUN_HOST=0.0.0.0
 
-RUN apk add --no-cache gcc musl-dev linux-headers
-
-COPY requirements.txt requirements.txt
+COPY requirements.txt /backend
 
 RUN pip install -r requirements.txt
 
 EXPOSE 5000
 
-COPY . .
+COPY .env /backend
+COPY .flaskenv /backend
+COPY app.py /backend
+COPY queries.py /backend
 
 CMD ["flask", "run"]

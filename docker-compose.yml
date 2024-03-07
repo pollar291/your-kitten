@@ -1,17 +1,19 @@
 version: '3.9'
 
 services:
-  postgres:
-    image: postgres:15.5-alpine
+  kitten-pgbd:
+    image: kitten-pgbd:latest
     restart: always
     environment:
       - POSTGRES_USER=root
       - POSTGRES_PASSWORD=root
-      - POSTGRES_DB=your-kitten-db
     ports:
       - "5432:5432"
     volumes:
       - postgres-data:/var/lib/postgresql/data
+    networks:
+      vpcbr:
+        ipv4_address: 10.5.0.5
   
   pgadmin-compose:
     image: dpage/pgadmin4
@@ -21,22 +23,46 @@ services:
     ports:
       - "16543:80"
     depends_on:
-      - postgres
+      - kitten-pgbd
     volumes:
       - pgadmin-data:/var/lib/pgadmin
     
-  #backend:
-    #image: your-kitten-backend:latest
-    #environment: 
-     #   - PORT=8888
-    #ports:
-     #   - "80:80"
+  kitten-backend:
+    build:
+      dockerfile: Dockerfile
+      context: ./server
+    restart: always
+    environment: 
+      - KITTEN_DB_ADDRESS=10.5.0.5
+    ports:
+      - "5000:5000"
+    depends_on:
+      - kitten-pgbd
+    networks:
+      vpcbr:
+        ipv4_address: 10.5.0.6
   
-  #frondend:
-    #image: your-kitten-frontend:latest
-    #ports:
-        #- "8080:80"
+  kitten-frondend:
+    build:
+      dockerfile: Dockerfile
+      context: ./client
+    restart: always
+    ports:
+      - "8080:80"
+    depends_on:
+      - kitten-backend
+    networks:
+      vpcbr:
+        ipv4_address: 10.5.0.7
 
 volumes:
   postgres-data:
   pgadmin-data:
+
+networks:
+  vpcbr:
+    driver: bridge
+    ipam:
+     config:
+       - subnet: 10.5.0.0/16
+         gateway: 10.5.0.1

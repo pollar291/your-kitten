@@ -1,8 +1,9 @@
-import os, io, psycopg2, hashlib, uuid, magic
+import os, io, psycopg2, hashlib, uuid
 from dotenv import load_dotenv
 from flask import Flask, request, abort, send_file
 from queries import *
 from flask_cors import CORS
+
 
 load_dotenv()
 
@@ -29,7 +30,7 @@ def auth():
     data = request.get_json()
     email = data["email"]
     password = data["password"]
-    uuid = None
+    token = None
     with connection:
         with connection.cursor() as cursor:
             cursor.execute(FIND_USER_BY_EMAIL, [email])
@@ -38,11 +39,12 @@ def auth():
                 db_hash_password = result[2]
                 login_hash_password = hashlib.md5(password.encode("utf-8")).hexdigest()
                 if db_hash_password == login_hash_password:
-                    uuid = cursor.execute(AUTH_USER, (str(uuid.uuid4()), result[0]))
+                    cursor.execute(AUTH_USER, (str(uuid.uuid4()), result[0]))
+                    token = cursor.fetchone()[0]
             connection.commit()                
                     
-    if uuid is not None:
-        return {"uuid": uuid}
+    if token is not None:
+        return {"token": token}
     else:
         return {"error": "uncorrect_login_or_password"}, 422
                 
@@ -64,7 +66,7 @@ def registration():
                 result = cursor.execute(CREATE_USER, (email, hash_password))
             connection.commit()
         
-    if result is None:
+    if result is not None:
         return {"id": result[0]}
     else:
         return {"error": "user_exists"}, 422
@@ -150,8 +152,7 @@ def loadPosterImage():
             with connection.cursor() as cursor:
                 for image_file in image_files:
                     image = image_file.read()
-                    mimeType = str(magic.from_buffer(image, mime=True))
-                    cursor.execute(CREATE_POSTER_IMAGE, (poster_id, image, mimeType))
+                    cursor.execute(CREATE_POSTER_IMAGE, (poster_id, image))
                     ids.append(cursor.fetchone()[0])
                 connection.commit()
                     
@@ -170,12 +171,11 @@ def get_poster_image():
     if result is None:
         return abort(404)
     imageBinary = result[0]
-    mimeTime = str(result[1])
     return send_file(
         io.BytesIO(imageBinary),
         as_attachment=False,
-        download_name="poster_" + image_id + "." + mimeTime.split("/")[1],
-        mimetype=mimeTime,
+        download_name="poster_" + image_id,
+        mimetype="image/jpeg",
         last_modified=last_modified
     )
 

@@ -1,7 +1,7 @@
 export class AuthResponse {
-  uuid: string
+  token: string
 
-  constructor(uuid: string) {
-    this.uuid = uuid
+  constructor(token: string) {
+    this.token = token
   }
 }
