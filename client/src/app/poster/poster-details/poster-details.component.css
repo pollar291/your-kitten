@@ -1,0 +1,21 @@
+.poster-card-details {
+  min-width: 10%;
+  max-width: 50%;
+  width: 100%;
+  margin: 80px auto;
+  padding: 16px 16px 24px;
+  box-shadow: 0 2px 32px rgba(0, 0, 0, 0.15);
+  border-radius: 4px;
+}
+
+.poster-card-title {
+  font-size: 25px;
+}
+
+.poster-details-image {
+  cursor:pointer;
+  width: 400px;
+  height: 300px;
+  object-fit: none; /* Do not scale the image */
+  object-position: center; /* Center the image within the element */
+}

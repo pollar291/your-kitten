@@ -4,6 +4,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { PosterMainResponse } from '../poster-main-response.model';
 import { NgIf } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-poster-card',
@@ -14,6 +15,8 @@ import { MatIconModule } from '@angular/material/icon';
 })
 export class PosterCardComponent {
   @Input() poster!: PosterMainResponse;
+
+  constructor(private router: Router) { }
 
   getImageUrl() {
     if (this.poster.images?.[0]) {
@@ -26,5 +29,9 @@ export class PosterCardComponent {
     } else {
       return null;
     }
+  }
+
+  openClick() {
+    this.router.navigateByUrl("/poster-details/" + this.poster.id)
   }
 }

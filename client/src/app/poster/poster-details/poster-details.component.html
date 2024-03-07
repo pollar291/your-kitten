@@ -1,0 +1,16 @@
+<mat-card class="poster-card-details">
+  <mat-card-header>
+    <mat-card-title class="poster-card-title">{{ poster.title }}</mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+    <p>
+      {{poster.description}}
+    </p>
+
+    <mat-grid-list cols="4">
+      <mat-grid-tile *ngFor="let image of posterImages">
+        <img class="poster-details-image" [src]="image" width="200" height="200" (click)="openDialog(image)">
+      </mat-grid-tile>
+    </mat-grid-list>
+  </mat-card-content>
+</mat-card>

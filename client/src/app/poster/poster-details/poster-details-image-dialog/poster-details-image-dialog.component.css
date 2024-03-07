@@ -1,0 +1,12 @@
+:host {
+  display: block;
+  background: #fff;
+  border-radius: 8px;
+  padding: 8px 16px;
+}
+
+.modal-dialog,.modal-dialog img { /*same value to avoid overwidth*/
+  width:70%;
+  height:70%;
+  margin:0 auto;
+}
