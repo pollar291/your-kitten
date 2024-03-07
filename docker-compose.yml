@@ -2,7 +2,9 @@ version: '3.9'
 
 services:
   kitten-pgbd:
-    image: kitten-pgbd:latest
+    build:
+      dockerfile: Dockerfile
+      context: ./database
     restart: always
     environment:
       - POSTGRES_USER=root
