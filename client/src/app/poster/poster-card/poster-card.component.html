@@ -1,0 +1,16 @@
+<mat-card class="poster-card">
+  <mat-card-header>
+    <mat-icon mat-card-avatar class="poster-header-image" aria-hidden="false" fontIcon="account_circle"></mat-icon>
+    <mat-card-title>{{ poster.title }}</mat-card-title>
+    <mat-card-subtitle>{{ poster.address }}</mat-card-subtitle>
+  </mat-card-header>
+  <img *ngIf="getImageUrl()" mat-card-image src="{{getImageUrl()}}" class="poster-image">
+  <mat-card-content>
+    <p>
+      {{poster.description}}
+    </p>
+  </mat-card-content>
+  <mat-card-actions>
+    <button mat-button>Открыть</button>
+  </mat-card-actions>
+</mat-card>

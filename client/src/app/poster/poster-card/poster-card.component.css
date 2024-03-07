@@ -1,0 +1,14 @@
+.poster-card {
+  max-width: 400px;
+}
+
+.poster-header-image {
+  background-size: cover;
+}
+
+.poster-image {
+  width: 400px;
+  height: 300px;
+  object-fit: none; /* Do not scale the image */
+  object-position: center; /* Center the image within the element */
+}

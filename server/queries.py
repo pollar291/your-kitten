@@ -7,6 +7,6 @@ CREATE_POST = "INSERT INTO posters (title, address, phone, status, description) 
 CREATE_USER_POST = "INSERT INTO user_posters (user_id, poster_id) VALUES (%s, %s) RETURNING *;"
 CREATE_POSTER_IMAGE = "INSERT INTO poster_images (poster_id, image, mime_type) VALUES (%s, %s, %s) RETURNING id;"
 GET_POSTER = "SELECT p.id, p.title, p.address, p.phone, p.status, p.description, (SELECT jsonb_agg(pi.id) FROM poster_images pi WHERE p.id = pi.poster_id) AS image_ids FROM posters p WHERE p.id = %s"
-GET_POSTERS = "SELECT p.id, p.title, p.address, p.phone, p.status, p.description, (SELECT jsonb_agg(pi.id) FROM poster_images pi WHERE p.id = pi.poster_id) AS image_ids FROM posters p LIMIT %s OFFSET %s"
+GET_POSTERS = "SELECT p.id, p.title, p.address, p.phone, p.status, p.description, (SELECT jsonb_agg(pi.id) FROM poster_images pi WHERE p.id = pi.poster_id) AS image_ids FROM posters p"
 
 GET_POSTER_IMAGE = "SELECT pi.image, pi.mime_type FROM poster_images pi WHERE pi.id = %s"

@@ -8,6 +8,6 @@ export const appConfig: ApplicationConfig = {
   providers: [
     provideProtractorTestingSupport(),
     provideRouter(routes),
-    provideAnimations()
-  ]
+    provideAnimations(),
+  ],
 };

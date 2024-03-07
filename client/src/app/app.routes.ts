@@ -9,23 +9,25 @@ export const routes: Routes = [
   {
     path: '',
     component: PosterMainComponent,
-    title: 'Home page',
-    children: [
-      {
-        path: 'auth',
-        component: AuthComponent,
-        title: 'Авторизация'
-      },
-      {
-        path: 'register',
-        component: RegisterComponent,
-        title: 'Регистрация'
-      },
-      {
-        path: 'create-poster',
-        component: PosterCreateComponent,
-        title: 'Создать объявление'
-      }
-    ]
-  }
+    title: 'Главная',
+  },
+  {
+    path: 'auth',
+    component: AuthComponent,
+    title: 'Авторизация',
+  },
+  {
+    path: 'register',
+    component: RegisterComponent,
+    title: 'Регистрация',
+  },
+  {
+    path: 'create-poster',
+    component: PosterCreateComponent,
+    title: 'Создать объявление',
+  },
+  {
+    path: '**',
+    redirectTo: '',
+  },
 ];
