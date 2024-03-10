@@ -1,10 +1,10 @@
-<mat-card class="poster-card-details">
+<mat-card *ngIf="poster" class="poster-card-details">
   <mat-card-header>
     <mat-card-title class="poster-card-title">{{ poster.title }}</mat-card-title>
   </mat-card-header>
   <mat-card-content>
     <p>
-      {{poster.description}}
+      {{poster.name}} {{poster.description}}
     </p>
 
     <mat-grid-list cols="4">

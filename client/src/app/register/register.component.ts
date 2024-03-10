@@ -16,12 +16,15 @@ import {
   ReactiveFormsModule,
 } from '@angular/forms';
 import { RegisterRequest } from './register-request.model';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
+import { AuthUpdaterService } from '../auth/auth-updater.service';
+import { NgIf } from '@angular/common';
 
 @Component({
   selector: 'app-register',
   standalone: true,
   imports: [
+    NgIf,
     FormsModule,
     MatInputModule,
     MatFormFieldModule,
@@ -35,9 +38,11 @@ import { ActivatedRoute } from '@angular/router';
   providers: [RegisterService],
 })
 export class RegisterComponent {
-  constructor(private registerService: RegisterService) {}
-
-  route: ActivatedRoute = inject(ActivatedRoute);
+  constructor(
+    private router: Router,
+    private authUpdaterService: AuthUpdaterService,
+    private registerService: RegisterService
+  ) {}
 
   emailFormControl = new FormControl('', [
     Validators.required,
@@ -45,20 +50,35 @@ export class RegisterComponent {
   ]);
 
   passwordFormControl = new FormControl('', [Validators.required]);
-
   repeatPasswordFormControl = new FormControl('', [Validators.required]);
 
+  errorServerText: string | null = null;
+
+  ngOnInit() {
+    if (this.authUpdaterService.isAuth) {
+      this.router.navigateByUrl('/');
+    }
+  }
+
   registration() {
-    // if (
-    //   this.passwordFormControl.value!.toString() ===
-    //   this.repeatPasswordFormControl.value!.toString()
-    // ) {
-    //   // TODO show error
-    //   return;
-    // }
+    if (
+      !this.emailFormControl.valid ||
+      !this.passwordFormControl.valid ||
+      !this.repeatPasswordFormControl
+    ) {
+      return;
+    }
+
+    if (
+      this.passwordFormControl.value!.toString() !==
+      this.repeatPasswordFormControl.value!.toString()
+    ) {
+      this.errorServerText = 'Пароли не совпадают!';
+      return;
+    }
 
     this.registerService
-      .login(
+      .registration(
         new RegisterRequest(
           this.emailFormControl.value!.toString(),
           this.passwordFormControl.value!.toString()
@@ -66,14 +86,18 @@ export class RegisterComponent {
       )
       .then(
         (response) => {
-          localStorage.setItem('token', response.uuid);
+          if (response.error && response.error === 'user_exists') {
+            this.errorServerText = 'Такой пользователь уже существует!';
+          } else {
+            this.router.navigateByUrl('/auth');
+          }
         },
         (error) => {
-          console.log(error);
+          this.errorServerText = 'Ошибка сервера!';
         }
       )
       .catch((err) => {
-        console.log(err);
+        this.errorServerText = 'Ошибка сервера!';
       });
   }
 }

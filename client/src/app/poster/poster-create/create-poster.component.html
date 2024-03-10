@@ -1,40 +1,39 @@
-<div class="register-container">
-  <mat-card>
-    <mat-card-content>
-      <form class="example-form" (submit)="createPost()">
-        <mat-form-field appearance="fill">
-          <mat-label>title</mat-label>
-          <input matInput [formControl]="titleFormControl" placeholder="Введите ваш email" type="email" required>
-        </mat-form-field>
-        <mat-form-field appearance="fill">
-          <mat-label>address</mat-label>
-          <input matInput [formControl]="addressFormControl" placeholder="Введите ваш email" type="email" required>
-        </mat-form-field>
-        <mat-form-field appearance="fill">
-          <mat-label>phone</mat-label>
-          <input matInput [formControl]="phoneFormControl" placeholder="Введите ваш email" type="email" required>
-        </mat-form-field>
-        <mat-form-field appearance="fill">
-          <mat-label>description</mat-label>
-          <input matInput [formControl]="descriptionFormControl" placeholder="Введите ваш email" type="email" required>
-        </mat-form-field>
+<form class="poster-create-card" (submit)="createPost()">
+  <h2>Создание объявления</h2>
+  <mat-form-field appearance="fill">
+    <mat-label>Название</mat-label>
+    <input matInput [formControl]="titleFormControl" type="text" required>
+  </mat-form-field>
+  <mat-form-field appearance="fill">
+    <mat-label>Имя животного</mat-label>
+    <input matInput [formControl]="nameFormControl" type="text" required>
+  </mat-form-field>
+  <mat-form-field appearance="fill">
+    <mat-label>Место, где потерялось</mat-label>
+    <input matInput [formControl]="addressFormControl" type="text" required>
+  </mat-form-field>
+  <mat-form-field appearance="fill">
+    <mat-label>Ваш телефон</mat-label>
+    <input matInput [formControl]="phoneFormControl" type="text" required>
+  </mat-form-field>
+  <mat-form-field mat-form-fieldappearance="fill">
+    <mat-label>Опишите приметы, как и когда потерялось животное</mat-label>
+    <textarea matInput name="questionText" cols="35" rows="8" [formControl]="descriptionFormControl"
+      required></textarea>
+  </mat-form-field>
 
 
-        <button type="button" mat-raised-button (click)="fileUpload.click()">Choose File</button>
-        <input hidden (change)="onFileSelected($event)" #fileUpload type="file" id="file">
+  <button type="button" mat-raised-button (click)="fileUpload.click()">Загрузить фотографию</button>
+  <input hidden (change)="onFileSelected($event)" #fileUpload type="file" id="file">
 
 
+  <mat-grid-list cols="4">
+    <mat-grid-tile *ngFor="let image of images">
+      <img class="thumbnail" src="{{image}}" height="200">
+    </mat-grid-tile>
+  </mat-grid-list>
 
-        <div>
-          <ul id="navlist">
-            <li *ngFor='let image of images'>
-              <img class="thumbnail" src="{{image}}" height="200">
-            </li>
-          </ul>
-        </div>
+  <mat-error *ngIf="errorServerText">{{errorServerText}}</mat-error>
 
-        <button mat-raised-button color="accent">Создать</button>
-      </form>
-    </mat-card-content>
-  </mat-card>
-</div>
+  <button mat-raised-button color="accent">Создать</button>
+</form>

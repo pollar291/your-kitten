@@ -1,21 +1,20 @@
 import { Injectable } from '@angular/core';
 import { RegisterRequest } from './register-request.model';
 import { RegisterResponse } from './register-response.model';
+import { BaseApiService } from '../base-api.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class RegisterService {
 
-  url = 'http://127.0.0.1:5000/registration';
+  constructor(private api: BaseApiService) {}
 
-  async login(registration: RegisterRequest): Promise<RegisterResponse> {
-    const requestHeaders: HeadersInit = new Headers();
-    requestHeaders.set('Content-Type', 'application/json');
-    const data = await fetch(this.url, {
+  async registration(registration: RegisterRequest): Promise<RegisterResponse> {
+    const data = await fetch(this.api.registration, {
       method: 'POST',
-      headers: requestHeaders,
-      body: JSON.stringify(registration)
+      body: JSON.stringify(registration),
+      headers : this.api.defaultHeaders()
     });
     return await data.json() ?? [];
   }

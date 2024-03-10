@@ -1,13 +1,21 @@
 export class CreatePosterRequest {
-  title: String
-  address: String
-  phone: String
-  description: String
+  title: string;
+  name: string;
+  address: string;
+  phone: string;
+  description: string;
 
-  constructor(title: String, address: String, phone: String, description: String) {
-    this.title = title
-    this.address = address
-    this.phone = phone
-    this.description = description
+  constructor(
+    title: string,
+    name: string,
+    address: string,
+    phone: string,
+    description: string
+  ) {
+    this.title = title;
+    this.name = name;
+    this.address = address;
+    this.phone = phone;
+    this.description = description;
   }
 }

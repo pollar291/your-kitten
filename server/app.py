@@ -24,7 +24,6 @@ def index():
     return "Running"
 
 
-# Сетевой запрос логина
 @app.post("/auth")
 def auth():
     data = request.get_json()
@@ -49,25 +48,23 @@ def auth():
         return {"error": "uncorrect_login_or_password"}, 422
                 
 
-
-# Регистрация
 @app.post("/registration")
 def registration():
     data = request.get_json()
     email = data["email"]
     password = data["password"]
     hash_password = hashlib.md5(password.encode("utf-8")).hexdigest()
-    result = None
+    userResult = None
     with connection:
         with connection.cursor() as cursor:
             cursor.execute(FIND_USER_BY_EMAIL, [email])
             result = cursor.fetchone()
             if result is None:
-                result = cursor.execute(CREATE_USER, (email, hash_password))
+                cursor.execute(CREATE_USER, (email, hash_password))
+                userResult = cursor.fetchone()
             connection.commit()
-        
-    if result is not None:
-        return {"id": result[0]}
+    if userResult is not None:
+        return {"id": userResult[0]}
     else:
         return {"error": "user_exists"}, 422
 
@@ -81,13 +78,14 @@ def create_poster():
     else:
         data = request.get_json()
         title = data["title"]
+        name = data["name"]
         address = data["address"]
         phone = data["phone"]
         description = data["description"]
         result = None
         with connection:
             with connection.cursor() as cursor:
-                cursor.execute(CREATE_POST, (title, address, phone, "NEW", description))
+                cursor.execute(CREATE_POST, (title, name, address, phone, "NEW", description))
                 result = cursor.fetchone()
                 cursor.execute(CREATE_USER_POST, (user_id, result[0]))
                 connection.commit()
@@ -105,11 +103,13 @@ def get_posters():
                     {
                         "id": row[0],
                         "title": row[1],
-                        "address": row[2],
-                        "phone": row[3],
-                        "status": row[4],
-                        "description": row[5],
-                        "images": row[6],
+                        "name": row[2],
+                        "address": row[3],
+                        "phone": row[4],
+                        "status": row[5],
+                        "description": row[6],
+                        "images": row[7],
+                        "authorEmail": row[8]
                     }
                 )
             connection.commit()
@@ -130,11 +130,13 @@ def get_poster():
     return {
         "id": result[0],
         "title": result[1],
-        "address": result[2],
-        "phone": result[3],
-        "status": result[4],
-        "description": result[5],
-        "images": result[6],
+        "name": result[2],
+        "address": result[3],
+        "phone": result[4],
+        "status": result[5],
+        "description": result[6],
+        "images": result[7],
+        "authorEmail": result[8]
     }
 
 

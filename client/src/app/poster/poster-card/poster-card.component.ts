@@ -1,10 +1,11 @@
 import { Component, Input } from '@angular/core';
-import { MatCardModule} from '@angular/material/card';
+import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { PosterMainResponse } from '../poster-main-response.model';
 import { NgIf } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 import { Router } from '@angular/router';
+import { BaseApiService } from '../../base-api.service';
 
 @Component({
   selector: 'app-poster-card',
@@ -16,22 +17,17 @@ import { Router } from '@angular/router';
 export class PosterCardComponent {
   @Input() poster!: PosterMainResponse;
 
-  constructor(private router: Router) { }
+  constructor(private api: BaseApiService, private router: Router) {}
 
   getImageUrl() {
     if (this.poster.images?.[0]) {
-      return (
-        'http://127.0.0.1:5000/poster_image?image_id=' +
-        this.poster?.images?.[0] +
-        '&last_modified=' +
-        Math.floor(Date.now() / 1000)
-      );
+      return this.api.createImageUrl(this.poster.images[0].toString());
     } else {
       return null;
     }
   }
 
   openClick() {
-    this.router.navigateByUrl("/poster-details/" + this.poster.id)
+    this.router.navigateByUrl('/poster-details/' + this.poster.id);
   }
 }

@@ -6,8 +6,9 @@ import { MatIconModule } from '@angular/material/icon';
 import { PosterDetailsService } from './poster-details.service';
 import { PosterDetailsResponse } from './poster-details-response.model';
 import { MatGridListModule } from '@angular/material/grid-list';
-import {Dialog, DIALOG_DATA, DialogModule} from '@angular/cdk/dialog';
+import { Dialog, DialogModule } from '@angular/cdk/dialog';
 import { PosterDetailsImageDialogComponent } from './poster-details-image-dialog/poster-details-image-dialog.component';
+import { BaseApiService } from '../../base-api.service';
 
 @Component({
   selector: 'app-poster-details',
@@ -20,7 +21,7 @@ import { PosterDetailsImageDialogComponent } from './poster-details-image-dialog
     NgFor,
     MatIconModule,
     MatGridListModule,
-    DialogModule
+    DialogModule,
   ],
   templateUrl: './poster-details.component.html',
   styleUrl: './poster-details.component.css',
@@ -31,6 +32,7 @@ export class PosterDetailsComponent {
   posterImages: String[] = [];
 
   constructor(
+    private api: BaseApiService,
     public dialog: Dialog,
     private posterDetailsService: PosterDetailsService
   ) {}
@@ -45,14 +47,9 @@ export class PosterDetailsComponent {
       .getPosterById(this.posterId)
       .then(
         (response) => {
-          console.log(response);
           this.poster = response;
-          this.posterImages = this.poster.images.map(
-            (i) =>
-              'http://127.0.0.1:5000/poster_image?image_id=' +
-              i +
-              '&last_modified=' +
-              Math.floor(Date.now() / 1000)
+          this.posterImages = this.poster.images.map((imageId) =>
+            this.api.createImageUrl(imageId.toString())
           );
         },
         (error) => {
@@ -68,7 +65,7 @@ export class PosterDetailsComponent {
     this.dialog.open(PosterDetailsImageDialogComponent, {
       minWidth: '300px',
       data: {
-        imageUrl: imageUrl
+        imageUrl: imageUrl,
       },
     });
   }

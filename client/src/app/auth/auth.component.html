@@ -1,23 +1,27 @@
-<form class="example-form" (submit)="login()">
-  <mat-form-field class="example-full-width">
-    <mat-label>Email</mat-label>
-    <input type="email" matInput [formControl]="emailFormControl" [errorStateMatcher]="matcher"
-      placeholder="Например: pat@example.com">
-    @if (emailFormControl.hasError('email') && !emailFormControl.hasError('required')) {
-    <mat-error>Пожалуйста, введите email правильно!</mat-error>
-    }
-    @if (emailFormControl.hasError('required')) {
-    <mat-error>Email <strong>обязателен</strong></mat-error>
-    }
-  </mat-form-field>
+<div class="login-form">
+  <form (submit)="login()">
+    <mat-form-field class="login-field">
+      <mat-label>Email</mat-label>
+      <input type="email" matInput [formControl]="emailFormControl"
+        placeholder="Например: polina@r.ru">
+      @if (emailFormControl.hasError('email') && !emailFormControl.hasError('required')) {
+      <mat-error>Пожалуйста, введите email правильно!</mat-error>
+      }
+      @if (emailFormControl.hasError('required')) {
+      <mat-error>Email обязателен</mat-error>
+      }
+    </mat-form-field>
 
-  <mat-form-field class="example-full-width">
-    <mat-label>Пароль</mat-label>
-    <input type="password" matInput [formControl]="passwordFormControl">
-    @if (passwordFormControl.hasError('required')) {
-    <mat-error>Пароль <strong>обязателен</strong></mat-error>
-    }
-  </mat-form-field>
+    <mat-form-field class="login-field">
+      <mat-label>Пароль</mat-label>
+      <input type="password" matInput [formControl]="passwordFormControl">
+      @if (passwordFormControl.hasError('required')) {
+      <mat-error>Пароль обязателен</mat-error>
+      }
+    </mat-form-field>
+    <mat-error *ngIf="errorServerText">{{ errorServerText }}</mat-error>
+    <button class="auth-button" mat-raised-button color="primary">Войти</button>
+  </form>
 
-  <button class="auth-button" mat-raised-button color="accent">Логин</button>
-</form>
+  <button class="auth-button btn-register" mat-raised-button routerLink="/register">Регистрация</button>
+</div>

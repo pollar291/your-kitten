@@ -43,6 +43,8 @@ services:
     networks:
       vpcbr:
         ipv4_address: 10.5.0.6
+    profiles:
+      - donotstart
   
   kitten-frondend:
     build:
@@ -56,6 +58,8 @@ services:
     networks:
       vpcbr:
         ipv4_address: 10.5.0.7
+    profiles:
+      - donotstart
 
 volumes:
   postgres-data:

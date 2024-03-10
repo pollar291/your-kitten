@@ -1,4 +1,4 @@
-.example-form {
+.login-form {
   min-width: 150px;
   max-width: 500px;
   width: 100%;
@@ -8,7 +8,7 @@
   border-radius: 4px;
 }
 
-.example-full-width {
+.login-field {
   width: 100%;
 }
 
@@ -17,4 +17,8 @@
   border-radius: 4px;
   width: 100%;
   font-size: 1.2rem;
+}
+
+.btn-register {
+  margin-top: 20px;
 }

@@ -1,20 +1,22 @@
 export class PosterDetailsResponse {
   address: String;
   description: String;
-  id: String;
-  images: String[];
-  phone: String;
-  status: String;
-  title: String;
+  id: string;
+  images: string[];
+  phone: string;
+  status: string;
+  title: string;
+  name: string;
 
   constructor(
-    address: String,
-    description: String,
-    id: String,
-    images: String[],
-    phone: String,
-    status: String,
-    title: String
+    address: string,
+    description: string,
+    id: string,
+    images: string[],
+    phone: string,
+    status: string,
+    title: string,
+    name: string
   ) {
     this.address = address;
     this.description = description;
@@ -23,5 +25,6 @@ export class PosterDetailsResponse {
     this.phone = phone;
     this.status = status;
     this.title = title;
+    this.name = name;
   }
 }

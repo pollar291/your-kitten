@@ -1,7 +1,7 @@
 <div class="register-container">
   <mat-card>
     <mat-card-content>
-      <form class="example-form" (submit)="registration()">
+      <form (submit)="registration()">
         <mat-form-field appearance="fill">
           <mat-label>Email</mat-label>
           <input matInput [formControl]="emailFormControl" placeholder="Введите ваш email" type="email" required>
@@ -16,7 +16,7 @@
           <mat-label>Повторите пароль</mat-label>
           <input matInput [formControl]="repeatPasswordFormControl" type="password" placeholder="Повторите ваш пароль" required>
         </mat-form-field>
-
+        <mat-error *ngIf="errorServerText">{{ errorServerText }}</mat-error>
         <button mat-raised-button color="accent">Зарегистрироваться</button>
       </form>
     </mat-card-content>

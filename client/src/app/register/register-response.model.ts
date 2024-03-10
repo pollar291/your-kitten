@@ -1,7 +1,9 @@
 export class RegisterResponse {
-  uuid: string
+  token: string
+  error?:string
 
-  constructor(uuid: string) {
-    this.uuid = uuid
+  constructor(token: string,error?:string) {
+    this.token = token
+    this.error = error
   }
 }

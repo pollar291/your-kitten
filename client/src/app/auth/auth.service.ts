@@ -1,20 +1,19 @@
 import { Injectable } from '@angular/core';
 import { AuthRequest } from './auth-request.model';
 import { AuthResponse } from './auth-response.model';
+import { BaseApiService } from '../base-api.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
 
-  url = 'http://127.0.0.1:5000/auth';
+  constructor(private api: BaseApiService) {}
 
   async login(auth: AuthRequest): Promise<AuthResponse> {
-    const requestHeaders: HeadersInit = new Headers();
-    requestHeaders.set('Content-Type', 'application/json');
-    const data = await fetch(this.url, {
+    const data = await fetch(this.api.auth, {
       method: 'POST',
-      headers: requestHeaders,
+      headers: this.api.defaultHeaders(),
       body: JSON.stringify(auth)
     });
     return await data.json() ?? [];

@@ -1,18 +1,17 @@
 import { Injectable } from '@angular/core';
 import { PosterDetailsResponse } from './poster-details-response.model';
+import { BaseApiService } from '../../base-api.service';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class PosterDetailsService {
-
-  url = 'http://127.0.0.1:5000/get_poster?poster_id=';
+  constructor(private api: BaseApiService) {}
 
   async getPosterById(posterId: string): Promise<PosterDetailsResponse> {
-    const requestHeaders: HeadersInit = new Headers();
-    requestHeaders.set('Content-Type', 'application/json');
-    const data = await fetch(this.url + posterId, {
-      method: 'GET'
+    const data = await fetch(this.api.getPoster(posterId), {
+      method: 'GET',
+      headers: this.api.defaultHeaders()
     });
     return await data.json() ?? [];
   }
